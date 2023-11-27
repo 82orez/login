@@ -30,22 +30,25 @@ const LoginForm = styled.form`
 const Input = styled.input`
   width: 100%;
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
 
-  &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  &::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
     font-size: 1rem;
     color: #858585;
     opacity: 1; /* Firefox */
   }
 
-  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
     font-size: 1rem;
   }
 
-  &::-ms-input-placeholder { /* Microsoft Edge */
+  &::-ms-input-placeholder {
+    /* Microsoft Edge */
     font-size: 1rem;
   }
 `;
@@ -57,7 +60,7 @@ const Button = styled.button`
   border-radius: 4px;
   background-color: #4caf50;
   color: white;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   cursor: pointer;
   font-size: 1rem;
 
@@ -98,15 +101,20 @@ const CheckboxContainer = styled.div`
   align-items: center;
   height: 50px;
   margin-bottom: 1rem;
+  //width: 100%;
 `;
 
 const Checkbox = styled.input`
-  //margin-bottom: 0.5rem;
+  margin-bottom: 0.7rem;
   margin-right: 1rem;
+  transform: scale(1.5);
 `;
 
 const Label = styled.label`
+  font-size: 1.1rem;
   color: #333;
+  width: 100%;
+  margin-bottom: 0.5rem;
 `;
 
 const LoginScreen = () => {
@@ -114,8 +122,10 @@ const LoginScreen = () => {
     <LoginContainer>
       <Title>Welcome back</Title>
       <LoginForm>
-        <Input type="email" id={'email'} placeholder="Email address" required={true} />
-        <Input type="password" placeholder="Password" required={true} />
+        <Label htmlFor="email">Email address</Label>
+        <Input type="email" id="email" placeholder="Email address" required={true} />
+        <Label htmlFor="password">Password</Label>
+        <Input type="password" id={'password'} placeholder="Password" required={true} />
         <CheckboxContainer>
           <Checkbox type="checkbox" id="remember" />
           <Label htmlFor="remember">로그인 상태 유지</Label>
@@ -129,7 +139,6 @@ const LoginScreen = () => {
         </Divider>
         <ExternalLoginButton>Continue with Google</ExternalLoginButton>
         <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>
-        <ExternalLoginButton>Continue with Apple</ExternalLoginButton>
       </LoginForm>
     </LoginContainer>
   );
