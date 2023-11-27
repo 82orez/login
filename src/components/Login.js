@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const BodyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  //align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 100%;
+  max-width: 460px;
   //background-color: #f7f7f7;
-  background-color: white;
 
   margin: 0 1rem;
 `;
@@ -22,7 +28,6 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 460px;
   align-items: center;
   font-size: 1.1rem;
 `;
@@ -101,12 +106,14 @@ const CheckboxContainer = styled.div`
   align-items: center;
   height: 50px;
   margin-bottom: 1rem;
-  //width: 100%;
+  // 로그인 상태 유지 가운데 정렬과 관련
+  width: 100%;
 `;
 
 const Checkbox = styled.input`
   margin-bottom: 0.7rem;
   margin-right: 1rem;
+  margin-left: 0.2rem;
   transform: scale(1.5);
 `;
 
@@ -117,31 +124,59 @@ const Label = styled.label`
   margin-bottom: 0.5rem;
 `;
 
-const LoginPage = () => {
+const HorizontalContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  margin: 2.5rem 0; // 위 아래 간격을 원하는 px로 설정합니다.
+`;
+
+const LeftDiv = styled.div`
+  font-size: 2.2rem;
+  font-weight: bolder;
+  text-align: left;
+`;
+
+const RightDiv = styled.div`
+  text-align: right;
+  font-size: 1.1rem;
+`;
+
+const Login = () => {
   return (
-    <LoginContainer>
-      <Title>Welcome back</Title>
-      <LoginForm>
-        <Label htmlFor="email">Email address</Label>
-        <Input type="email" id="email" placeholder="Email address" required={true} />
-        <Label htmlFor="password">Password</Label>
-        <Input type="password" id={'password'} placeholder="Password" required={true} />
-        <CheckboxContainer>
-          <Checkbox type="checkbox" id="remember" />
-          <Label htmlFor="remember">로그인 상태 유지</Label>
-        </CheckboxContainer>
-        <Button type="submit">Log in</Button>
-        <SignupText>
-          Don't have an account? <a href="/signup">Sign up</a>
-        </SignupText>
-        <Divider>
-          <DividerText>OR</DividerText>
-        </Divider>
-        <ExternalLoginButton>Continue with Google</ExternalLoginButton>
-        <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>
-      </LoginForm>
-    </LoginContainer>
+    <BodyContainer>
+      <LoginContainer>
+        <HorizontalContainer>
+          <LeftDiv>로그인</LeftDiv>
+          <RightDiv>
+            {/*<Link to={'/signup'}>아직 회원 가입 전이에요.</Link>*/}
+            아직 회원 가입 전이에요.
+          </RightDiv>
+        </HorizontalContainer>
+        <LoginForm>
+          <Label htmlFor="email">Email address</Label>
+          <Input type="email" id="email" placeholder="Email address" required={true} />
+          <Label htmlFor="password">Password</Label>
+          <Input type="password" id={'password'} placeholder="Password" required={true} />
+          <CheckboxContainer>
+            <Checkbox type="checkbox" id="remember" />
+            <Label htmlFor="remember">로그인 상태 유지</Label>
+          </CheckboxContainer>
+          <Button type="submit">Log in</Button>
+          <SignupText>
+            Don't have an account? <a href="/signup">Sign up</a>
+          </SignupText>
+          <Divider>
+            <DividerText>OR</DividerText>
+          </Divider>
+          <ExternalLoginButton>Continue with Google</ExternalLoginButton>
+          <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>
+        </LoginForm>
+      </LoginContainer>
+    </BodyContainer>
   );
 };
 
-export default LoginPage;
+export default Login;
