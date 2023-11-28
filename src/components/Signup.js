@@ -1,5 +1,4 @@
-import React from 'react';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
@@ -61,14 +60,14 @@ const Button = styled.button`
   padding: 1rem;
   border: none;
   border-radius: 4px;
-  background-color: #4caf50;
+  background-color: #427d9d;
   color: white;
   margin-bottom: 1.5rem;
   cursor: pointer;
   font-size: 1rem;
 
   &:hover {
-    background-color: #45a049;
+    background-color: #164863;
   }
 `;
 
@@ -99,22 +98,6 @@ const SignupText = styled.p`
   color: #333;
 `;
 
-const CheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 50px;
-  margin-bottom: 1rem;
-  // 로그인 상태 유지 가운데 정렬과 관련
-  width: 100%;
-`;
-
-const Checkbox = styled.input`
-  margin-bottom: 0.7rem;
-  margin-right: 1rem;
-  margin-left: 0.2rem;
-  transform: scale(1.5);
-`;
-
 const Label = styled.label`
   font-size: 1.1rem;
   color: #333;
@@ -141,13 +124,12 @@ const RightDiv = styled.div`
   text-align: right;
   font-size: 1.1rem;
 `;
-
-const Login = ({ setUserInfo, setIsLogin }) => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [checkedKeepLogin, setCheckedKeepLogin] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
+
   const navigate = useNavigate();
 
   const handleOnEmail = (e) => {
@@ -157,45 +139,47 @@ const Login = ({ setUserInfo, setIsLogin }) => {
     setPassword(e.target.value);
   };
 
-  const handleOnChecked = (e) => {
-    setCheckedKeepLogin(e.target.checked);
+  const isPasswordValid = (password) => {
+    // 정규 표현식: 영문, 숫자 포함 8자 이상
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return regex.test(password);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
+    if (!isPasswordValid(password)) {
+      alert('비밀번호는 영문, 숫자 포함 8자 이상이어야 합니다.');
+      setPassword(''); // 비밀번호 초기화
+      passwordRef.current.focus(); // 비밀번호 입력 창으로 focus 이동
+      return;
+    }
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/signup`, {
         email: email,
         password: password,
-        checkedKeepLogin: checkedKeepLogin,
+      })
+      .then((res) => {
+        if (res.data.result === 'Existing Email') {
+          alert('이미 가입된 이메일입니다.');
+          setPassword(''); // 비밀번호 초기화
+          emailRef.current.focus(); // 비밀번호 입력 창으로 focus 이동
+        } else if (res.data.result === 'Insert success'){
+          alert('회원 가입이 완료 되었습니다.');
+          navigate('/'); // 회원 가입 성공 후 '/' 경로로 이동. 회원 가입만 완료된 상태이고 로그인 전이므로 로그인 화면으로 이동.
+          console.log(res.data.result);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
       });
-
-      if (response.data.result === '존재하지 않는 이메일입니다.') {
-        alert(response.data.result);
-        setPassword('');
-        emailRef.current.focus();
-      } else if (response.data.result === '비밀번호가 일치하지 않습니다.') {
-        alert(response.data.result);
-        setPassword('');
-        passwordRef.current.focus();
-      } else if (response.data.result === 'Login success') {
-        setIsLogin(true); // isLogin 상태가 true 로 변경되면 App 컴포넌트에서 재렌더링이 일어나고 결국 MyPage 컴포넌트가 렌더링 된다.
-        setUserInfo({ email: response.data.email }); // 이메일 정보를 담은 객체로 상태 변경.
-        // alert('성공');
-        navigate('/');
-      }
-    } catch (e) {
-      console.log(e);
-    }
   };
-
   return (
     <BodyContainer>
       <LoginContainer>
         <HorizontalContainer>
-          <LeftDiv>로그인</LeftDiv>
+          <LeftDiv>회원 가입</LeftDiv>
           <RightDiv>
-            <Link to={'/signup'}>아직 회원 가입 전이에요.</Link>
+            <Link to={'/Login'}>로그인 하러 가기.</Link>
           </RightDiv>
         </HorizontalContainer>
         <LoginForm onSubmit={handleSubmit}>
@@ -203,11 +187,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
           <Input type="email" id="email" placeholder="Email address" ref={emailRef} required={true} onChange={handleOnEmail}/>
           <Label htmlFor="password">Password</Label>
           <Input type="password" id={'password'} placeholder="Password" ref={passwordRef} value={password} required={true} onChange={handleOnPassword}/>
-          <CheckboxContainer>
-            <Checkbox type="checkbox" id="remember" onChange={handleOnChecked}/>
-            <Label htmlFor="remember">로그인 상태 유지</Label>
-          </CheckboxContainer>
-          <Button type="submit">Log in</Button>
+          <Button type="submit">회원 가입</Button>
           <SignupText>
             Don't have an account? <a href="/signup">Sign up</a>
           </SignupText>
@@ -219,7 +199,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         </LoginForm>
       </LoginContainer>
     </BodyContainer>
-  );
-};
+  )
+}
 
-export default Login;
+export default Signup;
