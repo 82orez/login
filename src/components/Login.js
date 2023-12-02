@@ -96,6 +96,7 @@ const ExternalLoginButton = styled(Button)`
 `;
 
 const SignupText = styled.p`
+  text-align: center;
   color: #333;
 `;
 
@@ -170,12 +171,12 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         checkedKeepLogin: checkedKeepLogin,
       });
 
-      if (response.data.result === '존재하지 않는 이메일입니다.') {
-        alert(response.data.result);
+      if (response.data.message === '존재하지 않는 이메일입니다.') {
+        alert(response.data.message);
         setPassword('');
         emailRef.current.focus();
-      } else if (response.data.result === '비밀번호가 일치하지 않습니다.') {
-        alert(response.data.result);
+      } else if (response.data.message === '비밀번호가 일치하지 않습니다.') {
+        alert(response.data.message);
         setPassword('');
         passwordRef.current.focus();
       } else if (response.data.result === 'Login success') {
@@ -189,6 +190,18 @@ const Login = ({ setUserInfo, setIsLogin }) => {
     }
   };
 
+  // ? 구글 로그인을 위해서는 form 태그의 action 속성으로 처리해야 함. -> 리디렉션 시에  CORS 위반 방지 차원.
+  const RequestLoginWithGoogle = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/auth/google`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <BodyContainer>
       <LoginContainer>
@@ -200,23 +213,33 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         </HorizontalContainer>
         <LoginForm onSubmit={handleSubmit}>
           <Label htmlFor="email">Email address</Label>
-          <Input type="email" id="email" placeholder="Email address" ref={emailRef} required={true} onChange={handleOnEmail}/>
+          <Input type="email" id="email" placeholder="Email address" ref={emailRef} required={true} onChange={handleOnEmail} />
           <Label htmlFor="password">Password</Label>
-          <Input type="password" id={'password'} placeholder="Password" ref={passwordRef} value={password} required={true} onChange={handleOnPassword}/>
+          <Input
+            type="password"
+            id={'password'}
+            placeholder="Password"
+            ref={passwordRef}
+            value={password}
+            required={true}
+            onChange={handleOnPassword}
+          />
           <CheckboxContainer>
-            <Checkbox type="checkbox" id="remember" onChange={handleOnChecked}/>
+            <Checkbox type="checkbox" id="remember" onChange={handleOnChecked} />
             <Label htmlFor="remember">로그인 상태 유지</Label>
           </CheckboxContainer>
           <Button type="submit">Log in</Button>
-          <SignupText>
-            Don't have an account? <a href="/signup">Sign up</a>
-          </SignupText>
-          <Divider>
-            <DividerText>OR</DividerText>
-          </Divider>
-          <ExternalLoginButton>Continue with Google</ExternalLoginButton>
-          <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>
         </LoginForm>
+        <SignupText>
+          Don't have an account? <a href="/signup">Sign up</a>
+        </SignupText>
+        <Divider>
+          <DividerText>OR</DividerText>
+        </Divider>
+        <LoginForm action={'https://localhost:4000/auth/google'}>
+          <ExternalLoginButton>Action with Google</ExternalLoginButton>
+        </LoginForm>
+        <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>
       </LoginContainer>
     </BodyContainer>
   );

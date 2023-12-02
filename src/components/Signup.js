@@ -163,7 +163,7 @@ const Signup = () => {
           alert('이미 가입된 이메일입니다.');
           setPassword(''); // 비밀번호 초기화
           emailRef.current.focus(); // 비밀번호 입력 창으로 focus 이동
-        } else if (res.data.result === 'Insert success'){
+        } else if (res.data.result === 'Signup success'){
           alert('회원 가입이 완료 되었습니다.');
           navigate('/'); // 회원 가입 성공 후 '/' 경로로 이동. 회원 가입만 완료된 상태이고 로그인 전이므로 로그인 화면으로 이동.
           console.log(res.data.result);
