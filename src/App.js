@@ -14,26 +14,26 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
-  // const authHandler = () => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_URL}/userInfo`)
-  //     .then((res) => {
-  //       // ? 서버의 응답의 result 값이 200 'Not Login Info' 이면 아무 것도 하지 않는다.
-  //       if (res.data.result === 'Not Login Info') {
-  //       } else {
-  //         setIsLogin(true);
-  //         setUserInfo({ email: res.data.email });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       if (err.response.status === 400) {
-  //         console.log(err.response.data);
-  //       }
-  //     });
-  // };
-  // useEffect(() => {
-  //   authHandler();
-  // }, []);
+  const authHandler = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/userInfo`)
+      .then((res) => {
+        // ? 서버의 응답의 result 값이 200 'Not Login Info' 이면 아무 것도 하지 않는다.
+        if (res.data.result === 'Not Login Info') {
+        } else {
+          setIsLogin(true);
+          setUserInfo({ email: res.data.email });
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          console.log(err.response.data);
+        }
+      });
+  };
+  useEffect(() => {
+    authHandler();
+  }, []);
 
   const logoutHandler = () => {
     if (window.confirm('정말로 로그아웃 하시겠습니까?')) {

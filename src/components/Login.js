@@ -171,12 +171,12 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         checkedKeepLogin: checkedKeepLogin,
       });
 
-      if (response.data.message === '존재하지 않는 이메일입니다.') {
-        alert(response.data.message);
+      if (response.data.result === '존재하지 않는 이메일입니다.') {
+        alert(response.data.result);
         setPassword('');
         emailRef.current.focus();
-      } else if (response.data.message === '비밀번호가 일치하지 않습니다.') {
-        alert(response.data.message);
+      } else if (response.data.result === '비밀번호가 일치하지 않습니다.') {
+        alert(response.data.result);
         setPassword('');
         passwordRef.current.focus();
       } else if (response.data.result === 'Login success') {
