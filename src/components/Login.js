@@ -236,7 +236,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         <Divider>
           <DividerText>OR</DividerText>
         </Divider>
-        <LoginForm action={'https://localhost:4000/auth/google'}>
+        <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/google`}>
           <ExternalLoginButton>Action with Google</ExternalLoginButton>
         </LoginForm>
         <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>

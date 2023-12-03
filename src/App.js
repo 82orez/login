@@ -42,6 +42,7 @@ function App() {
         .then((res) => {
           setUserInfo(null);
           setIsLogin(false);
+          console.log(res.data.result);
         })
         .catch((err) => {
           alert(err);
