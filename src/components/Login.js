@@ -237,9 +237,11 @@ const Login = ({ setUserInfo, setIsLogin }) => {
           <DividerText>OR</DividerText>
         </Divider>
         <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/google`}>
-          <ExternalLoginButton>Action with Google</ExternalLoginButton>
+          <ExternalLoginButton>Login with Google</ExternalLoginButton>
         </LoginForm>
-        <ExternalLoginButton>Continue with Microsoft Account</ExternalLoginButton>
+        <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/kakao`}>
+          <ExternalLoginButton>Login with Kakao</ExternalLoginButton>
+        </LoginForm>
       </LoginContainer>
     </BodyContainer>
   );
