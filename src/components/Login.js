@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const BodyContainer = styled.div`
   display: flex;
@@ -150,6 +150,16 @@ const Login = ({ setUserInfo, setIsLogin }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const message = urlParams.get('message'); // URL 쿼리 파라미터에서 메시지를 가져옵니다.
+
+    if (message) {
+      alert(decodeURIComponent(message)); // 메시지가 있으면 경고창을 띄웁니다.
+    }
+  }, [location]); // location 이 변경될 때마다 이 훅을 실행합니다.
 
   const handleOnEmail = (e) => {
     setEmail(e.target.value);
@@ -188,18 +198,6 @@ const Login = ({ setUserInfo, setIsLogin }) => {
     } catch (e) {
       console.log(e);
     }
-  };
-
-  // ? 구글 로그인을 위해서는 form 태그의 action 속성으로 처리해야 함. -> 리디렉션 시에  CORS 위반 방지 차원.
-  const RequestLoginWithGoogle = () => {
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/auth/google`)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
   };
 
   return (
