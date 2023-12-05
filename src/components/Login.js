@@ -157,7 +157,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
     const message = urlParams.get('message'); // URL 쿼리 파라미터에서 메시지를 가져옵니다.
 
     if (message) {
-      alert(decodeURIComponent(message)); // 메시지가 있으면 경고창을 띄웁니다.
+      alert(`이미 ${decodeURIComponent(message)} 계정으로 회원 가입하셨습니다. ${decodeURIComponent(message)} 계정으로 로그인 부탁드립니다.`); // 메시지가 있으면 경고창을 띄웁니다.
     }
   }, [location]); // location 이 변경될 때마다 이 훅을 실행합니다.
 
