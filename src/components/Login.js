@@ -181,7 +181,11 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         checkedKeepLogin: checkedKeepLogin,
       });
 
-      if (response.data.result === '존재하지 않는 이메일입니다.') {
+      if (response.data.result === 'Google' || response.data.result === 'Kakao') {
+        alert(`이미 ${response.data.result} 계정으로 가입하셨습니다. ${response.data.result} 계정으로 로그인 부탁드립니다.`);
+        setEmail('');
+        setPassword('');
+      } else if (response.data.result === '존재하지 않는 이메일입니다.') {
         alert(response.data.result);
         setPassword('');
         emailRef.current.focus();
@@ -211,7 +215,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         </HorizontalContainer>
         <LoginForm onSubmit={handleSubmit}>
           <Label htmlFor="email">Email address</Label>
-          <Input type="email" id="email" placeholder="Email address" ref={emailRef} required={true} onChange={handleOnEmail} />
+          <Input type="email" id="email" placeholder="Email address" value={email} ref={emailRef} required={true} onChange={handleOnEmail} />
           <Label htmlFor="password">Password</Label>
           <Input
             type="password"
