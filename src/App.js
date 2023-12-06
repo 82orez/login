@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MyPage from './components/MyPage';
 import axios from 'axios';
+import NotLoginAccess from './components/NotLoginAccess';
 
 // ! 쿠키 적용을 위해 추가.
 //  모든 요청에 withCredentials 가 true 로 설정됩니다.
@@ -63,8 +64,22 @@ function App() {
             )
           }
         />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />} />
+        <Route
+          path="/signup"
+          element={
+            <NotLoginAccess isLogin={isLogin}>
+              <Signup />
+            </NotLoginAccess>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <NotLoginAccess isLogin={isLogin}>
+              <Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />
+            </NotLoginAccess>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
