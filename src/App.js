@@ -67,6 +67,7 @@ function App() {
         <Route
           path="/signup"
           element={
+            // ? NotLoginAccess: Login 이 안된 상태에서만 접근 가능
             <NotLoginAccess isLogin={isLogin}>
               <Signup />
             </NotLoginAccess>
@@ -75,6 +76,7 @@ function App() {
         <Route
           path="/login"
           element={
+            // ? NotLoginAccess: Login 이 안된 상태에서만 접근 가능
             <NotLoginAccess isLogin={isLogin}>
               <Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />
             </NotLoginAccess>

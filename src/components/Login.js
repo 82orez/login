@@ -65,7 +65,7 @@ const Button = styled.button`
   color: white;
   margin-bottom: 1.5rem;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.0rem;
 
   &:hover {
     background-color: #45a049;
@@ -92,6 +92,33 @@ const ExternalLoginButton = styled(Button)`
 
   &:hover {
     background-color: #e7e7e7;
+  }
+
+  // 버튼 안의 아이콘과 text 를 정렬하기 위해 flex 적용.
+  display: flex;
+  align-items: center;
+  //gap: 2rem;
+
+  // 아이콘 부분.
+  img {
+    width: 2rem; // 원하는 이미지 크기로 조절해주세요.
+    height: 2rem; // 원하는 이미지 크기로 조절해주세요.
+    border-radius: 12px;
+  }
+
+  // text 부분.
+  span {
+    flex-grow: 1;
+    margin-right: 2rem;
+  }
+
+  &.kakao {
+    // 'kakao' 클래스에 대한 스타일 정의
+    background-color: #fee500;
+
+    &:hover {
+      border: 1px solid black;
+    }
   }
 `;
 
@@ -158,6 +185,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
 
     if (message) {
       alert(`이미 ${decodeURIComponent(message)} 계정으로 회원 가입하셨습니다. ${decodeURIComponent(message)} 계정으로 로그인 부탁드립니다.`); // 메시지가 있으면 경고창을 띄웁니다.
+      navigate('/');
     }
   }, [location]); // location 이 변경될 때마다 이 훅을 실행합니다.
 
@@ -239,10 +267,16 @@ const Login = ({ setUserInfo, setIsLogin }) => {
           <DividerText>OR</DividerText>
         </Divider>
         <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/google`}>
-          <ExternalLoginButton>Login with Google</ExternalLoginButton>
+          <ExternalLoginButton>
+            <img src="/images/Google-64.png" alt="Google Icon" />
+            <span>구글로 시작하기</span>
+          </ExternalLoginButton>
         </LoginForm>
         <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/kakao`}>
-          <ExternalLoginButton>Login with Kakao</ExternalLoginButton>
+          <ExternalLoginButton className={'kakao'}>
+            <img src="/images/kakao_login_large_wide.png" alt="Google Icon" />
+            <span>카카오로 시작하기</span>
+          </ExternalLoginButton>
         </LoginForm>
       </LoginContainer>
     </BodyContainer>
