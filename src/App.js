@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import MyPage from './components/MyPage';
 import axios from 'axios';
 import NotLoginAccess from './components/NotLoginAccess';
+import EmailAuth from './components/EmailSignup/EmailAuth';
 
 // ! 쿠키 적용을 위해 추가.
 //  모든 요청에 withCredentials 가 true 로 설정됩니다.
@@ -69,7 +70,8 @@ function App() {
           element={
             // ? NotLoginAccess: Login 이 안된 상태에서만 접근 가능
             <NotLoginAccess isLogin={isLogin}>
-              <Signup />
+              {/*<Signup />*/}
+              <EmailAuth />
             </NotLoginAccess>
           }
         />
