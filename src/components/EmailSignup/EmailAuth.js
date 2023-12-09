@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const BodyContainer = styled.body`
+const BodyContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center; // 추가된 코드
@@ -16,11 +17,14 @@ const Container = styled.div`
   flex-direction: column;
   //align-items: center;
   justify-content: center;
+
   //height: 100vh;
   height: 100%;
   max-height: 660px;
+
   width: 100%;
   max-width: 500px;
+
   background-color: white;
   border-radius: 12px;
 
@@ -35,6 +39,11 @@ const Label = styled.div`
   justify-content: space-between;
 
   margin-bottom: 0.5rem;
+
+  #alert {
+    display: none;
+    color: red;
+  }
 `;
 
 const InputArea = styled.div`
@@ -99,14 +108,70 @@ const ContinueBttn = styled(ConfirmBttn)`
   margin: 2rem 0;
 `;
 
+const AlertMessage = styled.div`
+  // color props 가 있을 경우 해당 색상을 사용하고, 없을 경우 기본값으로 red 를 사용합니다.
+  color: ${(props) => props.color || 'red'};
+  display: ${(props) => (props.message ? 'block' : 'none')};
+`;
+
 const EmailAuth = () => {
   const [email, setEmail] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [timer, setTimer] = useState(null);
+
+  useEffect(() => {
+    let intervalId;
+
+    if (timer > 0) {
+      intervalId = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setAlertMessage({ message: '인증 코드가 만료 되었어요.', color: 'red' }); // 타이머가 0이 되었을 때 경고 메시지를 설정합니다.
+      clearInterval(intervalId);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [timer]);
 
   const handleOnEmail = (e) => {
     setEmail(e.target.value);
+
+    // 이메일 형식이 맞는지 확인합니다.
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    setIsValidEmail(emailRegex.test(e.target.value));
   };
 
+  const reqEmailAuth = (e) => {
+    e.preventDefault();
+    if (!isValidEmail) {
+      // 이메일 형식이 맞지 않으면 함수를 종료합니다.
+      setAlertMessage({ message: '정확한 이메일을 입력해 주세요.', color: 'red' });
+      return;
+    }
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/email`, {
+        email: email,
+      })
+      .then((res) => {
+        if (res.data.result === 'Google' || res.data.result === 'Kakao' || res.data.result === 'Email') {
+          setAlertMessage({ message: `이미 가입한 ${res.data.result} 계정이 있어요!`, color: 'red' });
+        } else {
+          setAlertMessage({ message: '메일로 인증 코드를 발송했어요', color: 'blue' });
+          setTimer(180); // 타이머를 3분(180초)으로 설정
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
 
   return (
     <BodyContainer>
@@ -116,15 +181,17 @@ const EmailAuth = () => {
         <h3 style={{ marginBottom: '5rem' }}>이메일 인증을 먼저 진행해 주세요.</h3>
         <Label>
           <div>아이디</div>
-          <div className={'alert'}>경고 메세지~~~~~~~</div>
+          <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
+            {alertMessage?.message}
+          </AlertMessage>
         </Label>
         <InputArea>
-          <Input type="email" placeholder="Email address" required={true}/>
-          <Button>인증 요청</Button>
+          <Input type="email" placeholder="Email address" onChange={handleOnEmail} />
+          <Button disabled={!email} onClick={reqEmailAuth}>{timer ? formatTime(timer) : '인증 요청'}</Button>
         </InputArea>
         <Label>
           <div>인증코드</div>
-          <div>경고 메세지~~~~~~~</div>
+          <div className={'alert'}></div>
         </Label>
         <InputArea>
           <Input type="text" placeholder="인증코드 6자를 입력하세요." />
