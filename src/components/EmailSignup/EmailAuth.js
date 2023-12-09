@@ -39,11 +39,6 @@ const Label = styled.div`
   justify-content: space-between;
 
   margin-bottom: 0.5rem;
-
-  #alert {
-    display: none;
-    color: red;
-  }
 `;
 
 const InputArea = styled.div`
@@ -120,6 +115,9 @@ const EmailAuth = () => {
   const [alertMessage, setAlertMessage] = useState(null);
   const [timer, setTimer] = useState(null);
 
+  const [token, setToken] = useState('');
+  const [alertToken, setAlertToken] = useState(null);
+
   useEffect(() => {
     let intervalId;
 
@@ -143,8 +141,12 @@ const EmailAuth = () => {
     setIsValidEmail(emailRegex.test(e.target.value));
   };
 
-  const reqEmailAuth = (e) => {
-    e.preventDefault();
+  const handleOnToken = (e) => {
+    setToken(e.target.value);
+  };
+
+  const reqEmailAuth = () => {
+    // e.preventDefault();
     if (!isValidEmail) {
       // 이메일 형식이 맞지 않으면 함수를 종료합니다.
       setAlertMessage({ message: '정확한 이메일을 입력해 주세요.', color: 'red' });
@@ -160,6 +162,26 @@ const EmailAuth = () => {
         } else {
           setAlertMessage({ message: '메일로 인증 코드를 발송했어요.', color: 'blue' });
           setTimer(180); // 타이머를 3분(180초)으로 설정
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  // !
+  const reqVerifyToken = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/verify`, {
+        email: email,
+        token: token,
+      })
+      .then((res) => {
+        if (res.data.result === 'User verified') {
+          // setAlertToken({ message: `${res.data.result}`, color: 'blue' });
+          setAlertToken({ message: '인증에 성공했습니다.', color: 'blue' });
+        } else {
+          setAlertToken({ message: '인증에 실패했습니다.', color: 'red' });
         }
       })
       .catch((e) => {
@@ -193,11 +215,18 @@ const EmailAuth = () => {
         </InputArea>
         <Label>
           <div>인증코드</div>
-          <div className={'alert'}></div>
+          <AlertMessage message={alertToken?.message} color={alertToken?.color}>
+            {alertToken?.message}
+          </AlertMessage>
         </Label>
         <InputArea>
-          <Input disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} type="text" placeholder="인증코드 6자를 입력하세요." />
-          <ConfirmBttn>확 인</ConfirmBttn>
+          <Input
+            disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'}
+            type="text"
+            placeholder="인증코드 6자를 입력하세요."
+            onChange={handleOnToken}
+          />
+          <ConfirmBttn disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} onClick={reqVerifyToken}>확 인</ConfirmBttn>
         </InputArea>
         <ContinueBttn>계속(1/3)</ContinueBttn>
         <Link to={'/login'}>
