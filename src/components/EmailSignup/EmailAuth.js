@@ -158,7 +158,7 @@ const EmailAuth = () => {
         if (res.data.result === 'Google' || res.data.result === 'Kakao' || res.data.result === 'Email') {
           setAlertMessage({ message: `이미 가입한 ${res.data.result} 계정이 있어요!`, color: 'red' });
         } else {
-          setAlertMessage({ message: '메일로 인증 코드를 발송했어요', color: 'blue' });
+          setAlertMessage({ message: '메일로 인증 코드를 발송했어요.', color: 'blue' });
           setTimer(180); // 타이머를 3분(180초)으로 설정
         }
       })
@@ -187,14 +187,16 @@ const EmailAuth = () => {
         </Label>
         <InputArea>
           <Input type="email" placeholder="Email address" onChange={handleOnEmail} />
-          <Button disabled={!email} onClick={reqEmailAuth}>{timer ? formatTime(timer) : '인증 요청'}</Button>
+          <Button disabled={!email} onClick={reqEmailAuth}>
+            {timer ? formatTime(timer) : '인증 요청'}
+          </Button>
         </InputArea>
         <Label>
           <div>인증코드</div>
           <div className={'alert'}></div>
         </Label>
         <InputArea>
-          <Input type="text" placeholder="인증코드 6자를 입력하세요." />
+          <Input disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} type="text" placeholder="인증코드 6자를 입력하세요." />
           <ConfirmBttn>확 인</ConfirmBttn>
         </InputArea>
         <ContinueBttn>계속(1/3)</ContinueBttn>
