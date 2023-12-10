@@ -178,11 +178,13 @@ const EmailAuth = () => {
       })
       .then((res) => {
         if (res.data.result === 'User verified') {
+          setTimer(null);
           // setAlertToken({ message: `${res.data.result}`, color: 'blue' });
           setAlertToken({ message: '인증에 성공했습니다.', color: 'blue' });
         } else {
           setAlertToken({ message: '인증에 실패했습니다.', color: 'red' });
         }
+        console.log(res.data.result);
       })
       .catch((e) => {
         console.log(e);
@@ -208,8 +210,13 @@ const EmailAuth = () => {
           </AlertMessage>
         </Label>
         <InputArea>
-          <Input type="email" placeholder="Email address" onChange={handleOnEmail} />
-          <Button disabled={!email} onClick={reqEmailAuth}>
+          <Input
+            disabled={alertMessage?.message === '메일로 인증 코드를 발송했어요.'}
+            type="email"
+            placeholder="Email address"
+            onChange={handleOnEmail}
+          />
+          <Button disabled={!email || alertMessage?.message === '메일로 인증 코드를 발송했어요.'} onClick={reqEmailAuth}>
             {timer ? formatTime(timer) : '인증 요청'}
           </Button>
         </InputArea>
@@ -227,6 +234,7 @@ const EmailAuth = () => {
             onChange={handleOnToken}
           />
           <ConfirmBttn disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} onClick={reqVerifyToken}>확 인</ConfirmBttn>
+          {/*<ConfirmBttn onClick={reqVerifyToken}>확 인</ConfirmBttn>*/}
         </InputArea>
         <ContinueBttn>계속(1/3)</ContinueBttn>
         <Link to={'/login'}>
