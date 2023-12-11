@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { FiEye, FiEyeOff } from 'react-icons/fi'; // react-icons 라이브러리에서 아이콘 가져오기
 
 const BodyContainer = styled.div`
   display: flex;
@@ -56,6 +57,19 @@ const Input = styled.input`
   }
 `;
 
+const PasswordInputArea = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const FiEyeArea = styled.div`
+  position: absolute;
+  top: 40%;
+  right: 1.2rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+`;
+
 const Button = styled.button`
   width: 100%;
   padding: 1rem;
@@ -65,7 +79,7 @@ const Button = styled.button`
   color: white;
   margin-bottom: 1.5rem;
   cursor: pointer;
-  font-size: 1.0rem;
+  font-size: 1rem;
 
   &:hover {
     background-color: #45a049;
@@ -178,6 +192,8 @@ const Login = ({ setUserInfo, setIsLogin }) => {
   const passwordRef = useRef();
   const navigate = useNavigate();
   const location = useLocation();
+  // 비밀번호를 볼 수 있는지 상태값 추가
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -188,6 +204,9 @@ const Login = ({ setUserInfo, setIsLogin }) => {
       navigate('/');
     }
   }, [location]); // location 이 변경될 때마다 이 훅을 실행합니다.
+
+  // 비밀번호를 볼 수 있게 하는 함수
+  const handleShowPassword = () => setShowPassword(!showPassword);
 
   const handleOnEmail = (e) => {
     setEmail(e.target.value);
@@ -245,15 +264,18 @@ const Login = ({ setUserInfo, setIsLogin }) => {
           <Label htmlFor="email">Email address</Label>
           <Input type="email" id="email" placeholder="Email address" value={email} ref={emailRef} required={true} onChange={handleOnEmail} />
           <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            id={'password'}
-            placeholder="Password"
-            ref={passwordRef}
-            value={password}
-            required={true}
-            onChange={handleOnPassword}
-          />
+          <PasswordInputArea>
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              id={'password'}
+              placeholder="Password"
+              ref={passwordRef}
+              value={password}
+              required={true}
+              onChange={handleOnPassword}
+            />
+            <FiEyeArea onClick={handleShowPassword}>{showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}</FiEyeArea>
+          </PasswordInputArea>
           <CheckboxContainer>
             <Checkbox type="checkbox" id="remember" onChange={handleOnChecked} />
             <Label htmlFor="remember">로그인 상태 유지</Label>
