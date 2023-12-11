@@ -20,7 +20,7 @@ const Container = styled.div`
 
   //height: 100vh;
   height: 100%;
-  max-height: 660px;
+  max-height: 720px;
 
   width: 100%;
   max-width: 500px;
@@ -76,7 +76,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   width: 6rem;
-  padding: 1rem;
+  padding: .8rem;
   border: none;
   border-radius: 4px;
   background-color: #4caf50;
@@ -202,7 +202,8 @@ const EmailAuth = () => {
       <Container>
         <h1>회원 가입</h1>
         <br />
-        <h3 style={{ marginBottom: '5rem' }}>이메일 인증을 먼저 진행해 주세요.</h3>
+        <h3 style={{ marginBottom: '2rem' }}>이메일 인증을 먼저 진행해 주세요.</h3>
+
         <Label>
           <div>아이디</div>
           <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
@@ -220,6 +221,7 @@ const EmailAuth = () => {
             {timer ? formatTime(timer) : '인증 요청'}
           </Button>
         </InputArea>
+
         <Label>
           <div>인증코드</div>
           <AlertMessage message={alertToken?.message} color={alertToken?.color}>
@@ -235,7 +237,38 @@ const EmailAuth = () => {
           />
           <ConfirmBttn disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} onClick={reqVerifyToken}>확 인</ConfirmBttn>
           {/*<ConfirmBttn onClick={reqVerifyToken}>확 인</ConfirmBttn>*/}
+        </InputArea><br/>
+
+        <Label>
+          <div>비밀 번호를 입력하세요.</div>
+          <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
+            {alertMessage?.message}
+          </AlertMessage>
+        </Label>
+        <InputArea>
+          <Input
+            disabled={alertToken?.message !== '인증에 성공했습니다.'}
+            type="password"
+            placeholder="영문, 숫자 포함 8자 이상으로 입력해주세요."
+            onChange={handleOnEmail}
+          />
         </InputArea>
+
+        <Label>
+          <div>비밀 번호를 확인해주세요.</div>
+          <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
+            {alertMessage?.message}
+          </AlertMessage>
+        </Label>
+        <InputArea>
+          <Input
+            disabled={alertToken?.message !== '인증에 성공했습니다.'}
+            type="password"
+            placeholder="비밀 번호를 확인해주세요."
+            onChange={handleOnEmail}
+          />
+        </InputArea>
+
         <ContinueBttn>계속(1/3)</ContinueBttn>
         <Link to={'/login'}>
           <h4>다른 계정으로 로그인</h4>
