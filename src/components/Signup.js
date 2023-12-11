@@ -163,7 +163,7 @@ const Signup = () => {
           alert('이미 가입된 이메일입니다.');
           setPassword(''); // 비밀번호 초기화
           emailRef.current.focus(); // 비밀번호 입력 창으로 focus 이동
-        } else if (res.data.result === 'Signup success'){
+        } else if (res.data.result === 'Signup success') {
           alert('회원 가입이 완료 되었습니다.');
           navigate('/'); // 회원 가입 성공 후 '/' 경로로 이동. 회원 가입만 완료된 상태이고 로그인 전이므로 로그인 화면으로 이동.
           console.log(res.data.result);
@@ -184,9 +184,17 @@ const Signup = () => {
         </HorizontalContainer>
         <LoginForm onSubmit={handleSubmit}>
           <Label htmlFor="email">Email address</Label>
-          <Input type="email" id="email" placeholder="Email address" ref={emailRef} required={true} onChange={handleOnEmail}/>
+          <Input type="email" id="email" placeholder="Email address" ref={emailRef} required={true} onChange={handleOnEmail} />
           <Label htmlFor="password">Password</Label>
-          <Input type="password" id={'password'} placeholder="Password" ref={passwordRef} value={password} required={true} onChange={handleOnPassword}/>
+          <Input
+            type="password"
+            id={'password'}
+            placeholder="Password"
+            ref={passwordRef}
+            value={password}
+            required={true}
+            onChange={handleOnPassword}
+          />
           <Button type="submit">회원 가입</Button>
           <SignupText>
             Don't have an account? <a href="/signup">Sign up</a>
@@ -199,7 +207,7 @@ const Signup = () => {
         </LoginForm>
       </LoginContainer>
     </BodyContainer>
-  )
-}
+  );
+};
 
 export default Signup;

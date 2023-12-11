@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -120,8 +120,10 @@ const EmailAuth = () => {
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [alertPasswordMessage, setAlertPasswordMessage] = useState('');
-  const [alertConfirmPasswordMessage, setAlertConfirmPasswordMessage] = useState('');
+  const [alertPasswordMessage, setAlertPasswordMessage] = useState(null);
+  const [alertConfirmPasswordMessage, setAlertConfirmPasswordMessage] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let intervalId;
@@ -150,12 +152,32 @@ const EmailAuth = () => {
     setToken(e.target.value);
   };
 
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
   const handleOnPassword = (e) => {
     setPassword(e.target.value);
+
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 영문, 숫자 포함 8자 이상
+    if (regex.test(e.target.value)) {
+      setAlertPasswordMessage(null);
+    } else {
+      setAlertPasswordMessage({ message: '영문, 숫자 포함 8자리 이상으로 작성해 주세요.', color: 'blue' });
+    }
   };
 
   const handleOnConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value);
+    const confirmValue = e.target.value;
+    setConfirmPassword(confirmValue);
+
+    if (confirmValue !== password) {
+      setAlertConfirmPasswordMessage({ message: '비밀번호가 일치하지 않습니다.' });
+    } else {
+      setAlertConfirmPasswordMessage({ message: '비밀번호가 일치합니다.', color: 'blue' });
+    }
   };
 
   const reqEmailAuth = () => {
@@ -207,10 +229,20 @@ const EmailAuth = () => {
       });
   };
 
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  const reqSignup = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/signup`, {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        if (res.data.result === 'Signup success') {
+          alert('회원 가입이 완료 되었습니다.');
+          navigate('/'); // 회원 가입 성공 후 '/' 경로로 이동. 회원 가입만 완료된 상태이고 로그인 전이므로 로그인 화면으로 이동.
+          console.log(res.data.result);
+        }
+      })
+      .catch();
   };
 
   return (
@@ -259,7 +291,7 @@ const EmailAuth = () => {
         <br />
 
         <Label>
-          <div>비밀 번호를 입력하세요.</div>
+          <div>비밀 번호</div>
           <AlertMessage message={alertPasswordMessage?.message} color={alertPasswordMessage?.color}>
             {alertPasswordMessage?.message}
           </AlertMessage>
@@ -268,13 +300,13 @@ const EmailAuth = () => {
           <Input
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
             type="password"
-            placeholder="영문, 숫자 포함 8자 이상으로 입력해주세요."
+            placeholder="영문, 숫자 포함 8자 이상으로 입력해 주세요."
             onChange={handleOnPassword}
           />
         </InputArea>
 
         <Label>
-          <div>비밀 번호를 확인해주세요.</div>
+          <div>비밀 번호 확인</div>
           <AlertMessage message={alertConfirmPasswordMessage?.message} color={alertConfirmPasswordMessage?.color}>
             {alertConfirmPasswordMessage?.message}
           </AlertMessage>
@@ -283,12 +315,14 @@ const EmailAuth = () => {
           <Input
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
             type="password"
-            placeholder="비밀 번호를 확인해주세요."
+            placeholder="비밀 번호를 다시 입력해 주세요."
             onChange={handleOnConfirmPassword}
           />
         </InputArea>
 
-        <ContinueBttn>회원 가입</ContinueBttn>
+        <ContinueBttn disabled={alertConfirmPasswordMessage?.message !== '비밀번호가 일치합니다.'} onClick={reqSignup}>
+          회원 가입
+        </ContinueBttn>
         <Link to={'/login'}>
           <h4>다른 계정으로 로그인</h4>
         </Link>
