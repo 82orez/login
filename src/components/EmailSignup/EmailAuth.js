@@ -76,7 +76,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   width: 6rem;
-  padding: .8rem;
+  padding: 0.8rem;
   border: none;
   border-radius: 4px;
   background-color: #4caf50;
@@ -118,6 +118,11 @@ const EmailAuth = () => {
   const [token, setToken] = useState('');
   const [alertToken, setAlertToken] = useState(null);
 
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [alertPasswordMessage, setAlertPasswordMessage] = useState('');
+  const [alertConfirmPasswordMessage, setAlertConfirmPasswordMessage] = useState('');
+
   useEffect(() => {
     let intervalId;
 
@@ -145,8 +150,20 @@ const EmailAuth = () => {
     setToken(e.target.value);
   };
 
+  const handleOnPassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleOnConfirmPassword = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const reqEmailAuth = () => {
     // e.preventDefault();
+    if (email.length === 0) {
+      setAlertMessage({ message: '이메일을 입력해 주세요.' });
+      return;
+    }
     if (!isValidEmail) {
       // 이메일 형식이 맞지 않으면 함수를 종료합니다.
       setAlertMessage({ message: '정확한 이메일을 입력해 주세요.', color: 'red' });
@@ -169,7 +186,6 @@ const EmailAuth = () => {
       });
   };
 
-  // !
   const reqVerifyToken = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/verify`, {
@@ -217,7 +233,7 @@ const EmailAuth = () => {
             placeholder="Email address"
             onChange={handleOnEmail}
           />
-          <Button disabled={!email || alertMessage?.message === '메일로 인증 코드를 발송했어요.'} onClick={reqEmailAuth}>
+          <Button disabled={alertMessage?.message === '메일로 인증 코드를 발송했어요.'} onClick={reqEmailAuth}>
             {timer ? formatTime(timer) : '인증 요청'}
           </Button>
         </InputArea>
@@ -235,14 +251,17 @@ const EmailAuth = () => {
             placeholder="인증코드 6자를 입력하세요."
             onChange={handleOnToken}
           />
-          <ConfirmBttn disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} onClick={reqVerifyToken}>확 인</ConfirmBttn>
+          <ConfirmBttn disabled={alertMessage?.message !== '메일로 인증 코드를 발송했어요.'} onClick={reqVerifyToken}>
+            확 인
+          </ConfirmBttn>
           {/*<ConfirmBttn onClick={reqVerifyToken}>확 인</ConfirmBttn>*/}
-        </InputArea><br/>
+        </InputArea>
+        <br />
 
         <Label>
           <div>비밀 번호를 입력하세요.</div>
-          <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
-            {alertMessage?.message}
+          <AlertMessage message={alertPasswordMessage?.message} color={alertPasswordMessage?.color}>
+            {alertPasswordMessage?.message}
           </AlertMessage>
         </Label>
         <InputArea>
@@ -250,14 +269,14 @@ const EmailAuth = () => {
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
             type="password"
             placeholder="영문, 숫자 포함 8자 이상으로 입력해주세요."
-            onChange={handleOnEmail}
+            onChange={handleOnPassword}
           />
         </InputArea>
 
         <Label>
           <div>비밀 번호를 확인해주세요.</div>
-          <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
-            {alertMessage?.message}
+          <AlertMessage message={alertConfirmPasswordMessage?.message} color={alertConfirmPasswordMessage?.color}>
+            {alertConfirmPasswordMessage?.message}
           </AlertMessage>
         </Label>
         <InputArea>
@@ -265,11 +284,11 @@ const EmailAuth = () => {
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
             type="password"
             placeholder="비밀 번호를 확인해주세요."
-            onChange={handleOnEmail}
+            onChange={handleOnConfirmPassword}
           />
         </InputArea>
 
-        <ContinueBttn>계속(1/3)</ContinueBttn>
+        <ContinueBttn>회원 가입</ContinueBttn>
         <Link to={'/login'}>
           <h4>다른 계정으로 로그인</h4>
         </Link>
