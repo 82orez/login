@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiEye, FiEyeOff } from 'react-icons/fi'; // react-icons 라이브러리에서 아이콘 가져오기
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const BodyContainer = styled.div`
   display: flex;

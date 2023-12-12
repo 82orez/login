@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const BodyContainer = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ const InputArea = styled.div`
   justify-content: space-between;
   gap: 1rem;
 `;
+
 const Input = styled.input`
   //width: 100%;
   padding: 0.8rem;
@@ -109,6 +111,24 @@ const AlertMessage = styled.div`
   display: ${(props) => (props.message ? 'block' : 'none')};
 `;
 
+const PasswordArea = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const PasswordInput = styled(Input)`
+  width: 100%;
+  //padding-right: 2rem;
+`;
+
+const FiEyeArea = styled.div`
+  position: absolute;
+  top: 40%;
+  right: 1.2rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+`;
+
 const EmailAuth = () => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
@@ -122,7 +142,8 @@ const EmailAuth = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [alertPasswordMessage, setAlertPasswordMessage] = useState(null);
   const [alertConfirmPasswordMessage, setAlertConfirmPasswordMessage] = useState(null);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -179,6 +200,9 @@ const EmailAuth = () => {
       setAlertConfirmPasswordMessage({ message: '비밀번호가 일치합니다.', color: 'blue' });
     }
   };
+
+  const handleShowPassword = () => setShowPassword(!showPassword);
+  const handleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
 
   const reqEmailAuth = () => {
     // e.preventDefault();
@@ -296,14 +320,15 @@ const EmailAuth = () => {
             {alertPasswordMessage?.message}
           </AlertMessage>
         </Label>
-        <InputArea>
-          <Input
+        <PasswordArea>
+          <PasswordInput
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             placeholder="영문, 숫자 포함 8자 이상으로 입력해 주세요."
             onChange={handleOnPassword}
           />
-        </InputArea>
+          <FiEyeArea onClick={handleShowPassword}>{showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}</FiEyeArea>
+        </PasswordArea>
 
         <Label>
           <div>비밀 번호 확인</div>
@@ -311,14 +336,15 @@ const EmailAuth = () => {
             {alertConfirmPasswordMessage?.message}
           </AlertMessage>
         </Label>
-        <InputArea>
-          <Input
+        <PasswordArea>
+          <PasswordInput
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             placeholder="비밀 번호를 다시 입력해 주세요."
             onChange={handleOnConfirmPassword}
           />
-        </InputArea>
+          <FiEyeArea onClick={handleShowConfirmPassword}>{showConfirmPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}</FiEyeArea>
+        </PasswordArea>
 
         <ContinueBttn disabled={alertConfirmPasswordMessage?.message !== '비밀번호가 일치합니다.'} onClick={reqSignup}>
           회원 가입
