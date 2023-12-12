@@ -103,9 +103,11 @@ const ExternalLoginButton = styled(Button)`
   background-color: white;
   color: #333;
   border: 1px solid #ccc;
+  //border-radius: 12px;
 
   &:hover {
     background-color: #e7e7e7;
+    border: 1px solid black;
   }
 
   // 버튼 안의 아이콘과 text 를 정렬하기 위해 flex 적용.

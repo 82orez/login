@@ -33,6 +33,10 @@ const Container = styled.div`
   padding: 2rem;
 
   text-align: center;
+
+  @media (max-width: 460px) {
+    padding: 1rem;
+  }
 `;
 
 const Label = styled.div`
@@ -77,7 +81,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 6rem;
+  width: 5.5rem;
   padding: 0.8rem;
   border: none;
   border-radius: 4px;
@@ -118,15 +122,26 @@ const PasswordArea = styled.div`
 
 const PasswordInput = styled(Input)`
   width: 100%;
+  margin-bottom: .5rem;
   //padding-right: 2rem;
 `;
 
 const FiEyeArea = styled.div`
   position: absolute;
-  top: 40%;
+  top: 50%;
   right: 1.2rem;
   transform: translateY(-50%);
   cursor: pointer;
+`;
+
+const P = styled.p`
+  width: 100%;
+  text-align: left;
+  margin-bottom: 1.8rem;
+
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.5); // 이 코드는 폰트 색상을 검정색의 60% 투명도로 설정합니다.
+
 `;
 
 const EmailAuth = () => {
@@ -274,10 +289,10 @@ const EmailAuth = () => {
       <Container>
         <h1>회원 가입</h1>
         <br />
-        <h3 style={{ marginBottom: '2rem' }}>이메일 인증을 먼저 진행해 주세요.</h3>
+        <h3 style={{ marginBottom: '2rem' }}>이메일과 비밀번호를 입력해 주세요.</h3>
 
         <Label>
-          <div>아이디</div>
+          <div>이메일</div>
           <AlertMessage message={alertMessage?.message} color={alertMessage?.color}>
             {alertMessage?.message}
           </AlertMessage>
@@ -324,11 +339,12 @@ const EmailAuth = () => {
           <PasswordInput
             disabled={alertToken?.message !== '인증에 성공했습니다.'}
             type={showPassword ? 'text' : 'password'}
-            placeholder="영문, 숫자 포함 8자 이상으로 입력해 주세요."
+            placeholder="비밀 번호를 입력해 주세요."
             onChange={handleOnPassword}
           />
           <FiEyeArea onClick={handleShowPassword}>{showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}</FiEyeArea>
         </PasswordArea>
+        <P>영문, 숫자 포함 8자 이상으로 입력해 주세요.</P>
 
         <Label>
           <div>비밀 번호 확인</div>
