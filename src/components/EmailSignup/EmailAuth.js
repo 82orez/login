@@ -122,7 +122,7 @@ const PasswordArea = styled.div`
 
 const PasswordInput = styled(Input)`
   width: 100%;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   //padding-right: 2rem;
 `;
 
@@ -141,7 +141,6 @@ const P = styled.p`
 
   font-style: italic;
   color: rgba(0, 0, 0, 0.5); // 이 코드는 폰트 색상을 검정색의 60% 투명도로 설정합니다.
-
 `;
 
 const EmailAuth = () => {
@@ -216,8 +215,14 @@ const EmailAuth = () => {
     }
   };
 
-  const handleShowPassword = () => setShowPassword(!showPassword);
-  const handleShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
+  const handleShowPassword = () => {
+    if (password.length > 0) {
+      setShowPassword(!showPassword);
+    }
+  };
+  const handleShowConfirmPassword = () => {
+    if (confirmPassword.length > 0) setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const reqEmailAuth = () => {
     // e.preventDefault();

@@ -194,7 +194,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
   const passwordRef = useRef();
   const navigate = useNavigate();
   const location = useLocation();
-  // 비밀번호를 볼 수 있는지 상태값 추가
+  // 비밀번호를 볼 수 있는지 toggle 하는 상태값 추가
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
@@ -207,14 +207,18 @@ const Login = ({ setUserInfo, setIsLogin }) => {
     }
   }, [location]); // location 이 변경될 때마다 이 훅을 실행합니다.
 
-  // 비밀번호를 볼 수 있게 하는 함수
-  const handleShowPassword = () => setShowPassword(!showPassword);
-
   const handleOnEmail = (e) => {
     setEmail(e.target.value);
   };
   const handleOnPassword = (e) => {
     setPassword(e.target.value);
+  };
+
+  // 비밀번호를 볼 수 있게 하는 함수
+  const handleShowPassword = () => {
+    if (password.length > 0) {
+      setShowPassword(!showPassword);
+    }
   };
 
   const handleOnChecked = (e) => {
