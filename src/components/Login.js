@@ -125,14 +125,14 @@ const ExternalLoginButton = styled(Button)`
     flex-grow: 1;
     margin-right: 2rem;
   }
+`;
 
-  &.kakao {
-    // 'kakao' 클래스에 대한 스타일 정의
+const KakaoBttn = styled(ExternalLoginButton)`
+  background-color: #fee500;
+
+  &:hover {
     background-color: #fee500;
-
-    &:hover {
-      border: 1px solid black;
-    }
+    border: 1px solid black;
   }
 `;
 
@@ -295,10 +295,10 @@ const Login = ({ setUserInfo, setIsLogin }) => {
           </ExternalLoginButton>
         </LoginForm>
         <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/kakao`}>
-          <ExternalLoginButton className={'kakao'}>
+          <KakaoBttn className={'kakao'}>
             <img src="/images/kakao_login_large_wide.png" alt="Google Icon" />
             <span>카카오로 시작하기</span>
-          </ExternalLoginButton>
+          </KakaoBttn>
         </LoginForm>
       </LoginContainer>
     </BodyContainer>
