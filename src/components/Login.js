@@ -138,6 +138,15 @@ const KakaoBttn = styled(ExternalLoginButton)`
   }
 `;
 
+const NaverBttn = styled(ExternalLoginButton)`
+  background-color: #02C75A;
+
+  &:hover {
+    background-color: #02C75A;
+    border: 1px solid black;
+  }
+`;
+
 const SignupText = styled.p`
   text-align: center;
   color: #333;
@@ -234,8 +243,9 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         checkedKeepLogin: checkedKeepLogin,
       });
 
-      if (response.data.result === 'Google' || response.data.result === 'Kakao') {
-        alert(`이미 ${response.data.result} 계정으로 가입하셨습니다. ${response.data.result} 계정으로 로그인 부탁드립니다.`);
+      // !
+      if (response.data.provider) {
+        alert(`이미 ${response.data.provider} 계정으로 가입하셨습니다. ${response.data.provider} 계정으로 로그인 부탁드립니다.`);
         setEmail('');
         setPassword('');
       } else if (response.data.result === '존재하지 않는 이메일입니다.') {
@@ -305,6 +315,12 @@ const Login = ({ setUserInfo, setIsLogin }) => {
             <img src="/images/kakao_login_large_wide.png" alt="Google Icon" />
             <span>카카오로 시작하기</span>
           </KakaoBttn>
+        </LoginForm>
+        <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/naver`}>
+          <NaverBttn className={'kakao'}>
+            <img src="/images/kakao_login_large_wide.png" alt="Google Icon" />
+            <span>네이버로 시작하기</span>
+          </NaverBttn>
         </LoginForm>
       </LoginContainer>
     </BodyContainer>

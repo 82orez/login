@@ -240,11 +240,13 @@ const EmailAuth = () => {
         email: email,
       })
       .then((res) => {
-        if (res.data.result === 'Google' || res.data.result === 'Kakao' || res.data.result === 'Email') {
-          setAlertMessage({ message: `이미 가입한 ${res.data.result} 계정이 있어요!`, color: 'red' });
+        // 이미 가입된 이메일 계정이 있으면 서버로부터 provider 으로 응답 받고, 없으면 result 값을 응답 받음.
+        if (res.data.provider) {
+          setAlertMessage({ message: `이미 가입한 ${res.data.provider} 계정이 있어요!`, color: 'red' });
         } else {
           setAlertMessage({ message: '메일로 인증 코드를 발송했어요.', color: 'blue' });
           setTimer(180); // 타이머를 3분(180초)으로 설정
+          console.log(res.data.result);
         }
       })
       .catch((e) => {
