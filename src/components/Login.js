@@ -140,6 +140,7 @@ const KakaoBttn = styled(ExternalLoginButton)`
 
 const NaverBttn = styled(ExternalLoginButton)`
   background-color: #02C75A;
+  color: white;
 
   &:hover {
     background-color: #02C75A;
@@ -318,7 +319,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         </LoginForm>
         <LoginForm action={`${process.env.REACT_APP_API_URL}/auth/naver`}>
           <NaverBttn className={'kakao'}>
-            <img src="/images/kakao_login_large_wide.png" alt="Google Icon" />
+            <img src="/images/naver_btnG-2.png" alt="Google Icon" />
             <span>네이버로 시작하기</span>
           </NaverBttn>
         </LoginForm>
