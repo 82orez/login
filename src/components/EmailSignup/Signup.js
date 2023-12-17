@@ -200,7 +200,7 @@ const Signup = () => {
     if (regex.test(e.target.value)) {
       setAlertPasswordMessage(null);
     } else {
-      setAlertPasswordMessage({ message: '영문, 숫자 포함 8자리 이상으로 작성해 주세요.', color: 'blue' });
+      setAlertPasswordMessage({ message: '영문, 숫자 포함 8자리 이상으로 작성해 주세요.' });
     }
   };
 
@@ -208,10 +208,14 @@ const Signup = () => {
     const confirmValue = e.target.value;
     setConfirmPassword(confirmValue);
 
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // 영문, 숫자 포함 8자 이상
+
     if (confirmValue !== password) {
       setAlertConfirmPasswordMessage({ message: '비밀번호가 일치하지 않습니다.' });
-    } else {
+    } else if (regex.test(password) && confirmValue === password){
       setAlertConfirmPasswordMessage({ message: '비밀번호가 일치합니다.', color: 'blue' });
+    } else {
+      setAlertConfirmPasswordMessage({message: '비밀번호를 확인해 주세요.'})
     }
   };
 
