@@ -139,11 +139,11 @@ const KakaoBttn = styled(ExternalLoginButton)`
 `;
 
 const NaverBttn = styled(ExternalLoginButton)`
-  background-color: #02C75A;
+  background-color: #02c75a;
   color: white;
 
   &:hover {
-    background-color: #02C75A;
+    background-color: #02c75a;
     border: 1px solid black;
   }
 `;

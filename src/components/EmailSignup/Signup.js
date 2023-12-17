@@ -143,7 +143,7 @@ const P = styled.p`
   color: rgba(0, 0, 0, 0.5); // 이 코드는 폰트 색상을 검정색의 60% 투명도로 설정합니다.
 `;
 
-const EmailAuth = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [alertMessage, setAlertMessage] = useState(null);
@@ -380,4 +380,4 @@ const EmailAuth = () => {
   );
 };
 
-export default EmailAuth;
+export default Signup;
