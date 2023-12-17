@@ -24,7 +24,7 @@ function App() {
         if (res.data.result === 'Not Login Info') {
         } else {
           setIsLogin(true);
-          setUserInfo({ email: res.data.email });
+          setUserInfo({ email: res.data.email, provider: res.data.provider });
         }
       })
       .catch((err) => {

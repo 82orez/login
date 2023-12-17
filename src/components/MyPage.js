@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Button = styled.button`
   //width: 100%;
-  padding: .8rem;
+  padding: 0.8rem;
   border: none;
   border-radius: 4px;
   background-color: #427d9d;
@@ -18,7 +18,10 @@ const Button = styled.button`
 const MyPage = (props) => {
   return (
     <div>
-      <span>Your email address is {`${props.userInfo.email}`}</span>
+      <div>Your email address is {`${props.userInfo.email}`}</div>
+      <br />
+      <div>You're logged by {`${props.userInfo.provider}`}</div>
+      <br />
       <Button onClick={() => props.logoutHandler()}>Log out</Button>
     </div>
   );
