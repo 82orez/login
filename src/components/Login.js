@@ -245,7 +245,7 @@ const Login = ({ setUserInfo, setIsLogin }) => {
       });
 
       // !
-      if (response.data.provider) {
+      if (response.data.result === '다른 계정으로 이미 가입하셨네요.') {
         alert(`이미 ${response.data.provider} 계정으로 가입하셨습니다. ${response.data.provider} 계정으로 로그인 부탁드립니다.`);
         setEmail('');
         setPassword('');
@@ -259,9 +259,9 @@ const Login = ({ setUserInfo, setIsLogin }) => {
         passwordRef.current.focus();
       } else if (response.data.result === 'Login success') {
         setIsLogin(true); // isLogin 상태가 true 로 변경되면 App 컴포넌트에서 재렌더링이 일어나고 결국 MyPage 컴포넌트가 렌더링 된다.
-        setUserInfo({ email: response.data.email }); // 이메일 정보를 담은 객체로 상태 변경.
+        setUserInfo({ email: response.data.email, provider: response.data.provider }); // 이메일 정보를 담은 객체로 상태 변경.
         // alert('성공');
-        navigate('/');
+        // navigate('/');
       }
     } catch (e) {
       console.log(e);
