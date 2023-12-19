@@ -6,6 +6,7 @@ import MyPage from './components/MyPage';
 import axios from 'axios';
 import NotLoginAccess from './components/NotLoginAccess';
 import Signup from './components/EmailSignup/Signup';
+import ErrorPage from './components/ErrorPage';
 
 // ! 쿠키 적용을 위해 추가.
 //  모든 요청에 withCredentials 가 true 로 설정됩니다.
@@ -82,6 +83,7 @@ function App() {
             </NotLoginAccess>
           }
         />
+        <Route path={'/error-page'} element={<ErrorPage />}></Route>
       </Routes>
     </BrowserRouter>
   );

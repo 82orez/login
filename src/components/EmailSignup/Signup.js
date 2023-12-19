@@ -212,10 +212,10 @@ const Signup = () => {
 
     if (confirmValue !== password) {
       setAlertConfirmPasswordMessage({ message: '비밀번호가 일치하지 않습니다.' });
-    } else if (regex.test(password) && confirmValue === password){
+    } else if (regex.test(password) && confirmValue === password) {
       setAlertConfirmPasswordMessage({ message: '비밀번호가 일치합니다.', color: 'blue' });
     } else {
-      setAlertConfirmPasswordMessage({message: '비밀번호를 확인해 주세요.'})
+      setAlertConfirmPasswordMessage({ message: '비밀번호를 확인해 주세요.' });
     }
   };
 
