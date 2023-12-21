@@ -82,7 +82,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   width: 5.5rem;
-  padding: 0.8rem;
+  padding: 0.8rem 0.1rem;
   border: none;
   border-radius: 4px;
   background-color: #4caf50;
