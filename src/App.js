@@ -61,7 +61,7 @@ function App() {
             isLogin ? (
               <MyPage isLogin={isLogin} setIsLogin={setIsLogin} setUserInfo={setUserInfo} userInfo={userInfo} logoutHandler={logoutHandler} />
             ) : (
-              <Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />
+              <Login isLogin={isLogin} setIsLogin={setIsLogin} setUserInfo={setUserInfo} />
             )
           }
         />
@@ -79,7 +79,7 @@ function App() {
           element={
             // ? NotLoginAccess: Login 이 안된 상태에서만 접근 가능
             <NotLoginAccess isLogin={isLogin}>
-              <Login setIsLogin={setIsLogin} setUserInfo={setUserInfo} />
+              <Login isLogin={isLogin} setIsLogin={setIsLogin} setUserInfo={setUserInfo} />
             </NotLoginAccess>
           }
         />

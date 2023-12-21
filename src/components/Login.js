@@ -196,7 +196,7 @@ const RightDiv = styled.div`
   font-size: 1.1rem;
 `;
 
-const Login = ({ setUserInfo, setIsLogin }) => {
+const Login = ({ isLogin, setUserInfo, setIsLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkedKeepLogin, setCheckedKeepLogin] = useState(false);
@@ -206,6 +206,22 @@ const Login = ({ setUserInfo, setIsLogin }) => {
   const location = useLocation();
   // 비밀번호를 볼 수 있는지 toggle 하는 상태값 추가
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const handleBackButtonEvent = (e) => {
+      e.preventDefault();
+      if (!isLogin) {
+        navigate('/login');
+      }
+    };
+
+    window.history.pushState(null, null, location.pathname);
+    window.addEventListener('popstate', handleBackButtonEvent);
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButtonEvent);
+    }
+  }, [isLogin, navigate, location]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
